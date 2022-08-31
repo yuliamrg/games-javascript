@@ -16,8 +16,13 @@ function startGame() {
     game.textAlign = 'end';
     
     for (let i = 1; i <= 10; i++) {
-        game.fillText (emojis['X'], elementSize * 1.26, elementSize * i - 3);
+        for (let j = 1; j <= 10; j++) {
+            const array = maps[Math.floor(Math.random() * (3-1) + 1)];
+            console.log(array);
+            game.fillText (emojis['X'], elementSize * j * 1.26, elementSize * i - 3);
+        }
     }
+    
     
 
 //     // game.fillRect(0,0,100,100);
