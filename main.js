@@ -3,23 +3,32 @@ const game = canvas.getContext('2d');
 
 let canvasSize;
 let elementSize;
+let randomN = Math.floor(Math.random() * (3-0));
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
+// window.addEventListener('keyup', holi);
 
+
+function holi() {
+    console.log('holi');    
+}
 
 function startGame() {
 
-    console.log({canvasSize, elementSize});
+    console.log({canvasSize, elementSize, randomN});
 
     game.font = elementSize + 'px Verdana';
     game.textAlign = 'end';
     
+    const map = maps[randomN];
+    const mapRows = map.trim().split(`\n`);
+
+    const mapColums = mapRows.map(row => row.trim().split(''));
+    
     for (let i = 1; i <= 10; i++) {
         for (let j = 1; j <= 10; j++) {
-            const array = maps[Math.floor(Math.random() * (3-1) + 1)];
-            console.log(array);
-            game.fillText (emojis['X'], elementSize * j * 1.26, elementSize * i - 3);
+            game.fillText (emojis[mapColums[i - 1][j - 1]], elementSize * j * 1.26, elementSize * i - 3);
         }
     }
     
@@ -45,7 +54,7 @@ function setCanvasSize() {
     canvas.setAttribute('width', canvasSize);
     canvas.setAttribute('height', canvasSize);
 
-    elementSize = canvasSize / 10;
+    elementSize = canvasSize / 10.1;
 
     startGame();
 }
