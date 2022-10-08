@@ -1,6 +1,10 @@
 const canvas = document.querySelector('#game');
+debugger
 const game = canvas.getContext('2d');
-const button = document.querySelector('#up');
+const buttonUp = document.querySelector('#up');
+const buttonLeft = document.querySelector('#left');
+const buttonRight = document.querySelector('#right');
+const buttonDown = document.querySelector('#down');
 
 let canvasSize;
 let elementSize;
@@ -8,7 +12,46 @@ let randomN = Math.floor(Math.random() * (3-0));
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
-button.addEventListener('click', randomNumber);
+
+window.addEventListener('keydown', moveByKeys);
+
+buttonUp.addEventListener('click', moveUp);
+buttonLeft.addEventListener('click', moveLeft);
+buttonRight.addEventListener('click', moveRight);
+buttonDown.addEventListener('click', moveDown);
+
+function moveByKeys(event) {
+    switch (event.key) {
+        case 'ArrowUp':
+            moveUp();
+            break;
+        case 'ArrowLeft':
+            moveLeft();
+            break;
+        case 'ArrowRight':
+            moveRight();
+            break;
+        case 'ArrowDown':
+            moveDown();
+            break;
+    
+        default:
+            break;
+    }
+}
+
+function moveUp() {
+    console.log('arriba');
+}
+function moveLeft() {
+    console.log('izquierda');
+}
+function moveRight() {
+    console.log('derecha');
+}
+function moveDown() {
+    console.log('abajo');
+}
 
 
 function randomNumber() {
@@ -35,7 +78,6 @@ function startGame() {
             const xAxis = elementSize * (colINdex + 1) * 1.26
             const yAxis = elementSize * (rowIndex + 1) - 3;
             game.fillText(emoji, xAxis, yAxis);
-            console.log({row, rowIndex, col, colINdex, emoji});
         });       
     });
 };
