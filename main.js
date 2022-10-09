@@ -1,5 +1,4 @@
 const canvas = document.querySelector('#game');
-debugger
 const game = canvas.getContext('2d');
 const buttonUp = document.querySelector('#up');
 const buttonLeft = document.querySelector('#left');
@@ -34,9 +33,6 @@ function moveByKeys(event) {
         case 'ArrowDown':
             moveDown();
             break;
-    
-        default:
-            break;
     }
 }
 
@@ -55,13 +51,12 @@ function moveDown() {
 
 
 function randomNumber() {
-    console.log('log');
-    randomN = Math.floor(Math.random() * (3-0));
+    randomN = Math.floor(Math.random() * 3);
+    console.log(randomN);
     setCanvasSize();
 }
 
 function startGame() {
-
     console.log({canvasSize, elementSize, randomN});
 
     game.font = elementSize + 'px Verdana';
@@ -75,8 +70,8 @@ function startGame() {
     mapColums.forEach((row, rowIndex) => {
         row.forEach((col, colINdex) => {
             const emoji = emojis[col];
-            const xAxis = elementSize * (colINdex + 1) * 1.26
-            const yAxis = elementSize * (rowIndex + 1) - 3;
+            const xAxis = elementSize * (colINdex + 1.2);
+            const yAxis = elementSize * (rowIndex + 0.9);
             game.fillText(emoji, xAxis, yAxis);
         });       
     });
