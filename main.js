@@ -9,6 +9,11 @@ let canvasSize;
 let elementSize;
 let randomN = Math.floor(Math.random() * (3-0));
 
+const playerPosition = {
+    x: undefined,
+    y: undefined,
+}
+
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
@@ -21,32 +26,38 @@ buttonDown.addEventListener('click', moveDown);
 
 function moveByKeys(event) {
     switch (event.key) {
-        case 'ArrowUp':
-            moveUp();
+        case 'ArrowUp': moveUp();
             break;
-        case 'ArrowLeft':
-            moveLeft();
+        case 'ArrowLeft': moveLeft();
             break;
-        case 'ArrowRight':
-            moveRight();
+        case 'ArrowRight': moveRight();
             break;
-        case 'ArrowDown':
-            moveDown();
+        case 'ArrowDown': moveDown();
             break;
     }
 }
 
+function movePlayer() {
+    game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
+}
+
 function moveUp() {
     console.log('arriba');
+    playerPosition.y -= elementSize;
+    startGame()
 }
 function moveLeft() {
-    console.log('izquierda');
+    playerPosition.x -= elementSize;
+    startGame()
 }
 function moveRight() {
     console.log('derecha');
+    playerPosition.x += elementSize;
+    startGame()
 }
 function moveDown() {
-    console.log('abajo');
+    playerPosition.y += elementSize;
+    startGame()
 }
 
 
@@ -67,14 +78,25 @@ function startGame() {
 
     const mapColums = mapRows.map(row => row.trim().split('')); // crear un array dentro de los arrays que contiene por separado cada letra de los arrays originales
 
+    game.clearRect(0,0, canvasSize, canvasSize);
     mapColums.forEach((row, rowIndex) => {
         row.forEach((col, colINdex) => {
             const emoji = emojis[col];
             const xAxis = elementSize * (colINdex + 1.2);
             const yAxis = elementSize * (rowIndex + 0.9);
+
+            if (col == 'O') {
+                if (!playerPosition.x && !playerPosition.y) {
+                    playerPosition.x = xAxis;
+                    playerPosition.y = yAxis;
+                }
+            }
+
             game.fillText(emoji, xAxis, yAxis);
         });       
     });
+
+    movePlayer();
 };
 
 function setCanvasSize() {
