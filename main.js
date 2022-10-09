@@ -14,6 +14,13 @@ const playerPosition = {
     y: undefined,
 }
 
+const giftPosition = {
+    x: undefined,
+    y: undefined,
+}
+
+const enemiesPositions = [];
+
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
@@ -38,6 +45,7 @@ function moveByKeys(event) {
 }
 
 function movePlayer() {
+
     game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 
@@ -105,7 +113,19 @@ function startGame() {
                     playerPosition.x = xAxis;
                     playerPosition.y = yAxis;
                 }
+            } else if (col == 'I') {
+                if (!giftPosition.x && !giftPosition.y) {
+                    giftPosition.x = xAxis;
+                    giftPosition.y = yAxis;
+                }
+            } else if (col == 'X') {
+                enemiesPositions.push({
+                    posX: xAxis,
+                    posY: yAxis,
+                })
             }
+
+
 
             game.fillText(emoji, xAxis, yAxis);
         });       
