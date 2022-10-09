@@ -42,22 +42,37 @@ function movePlayer() {
 }
 
 function moveUp() {
-    console.log('arriba');
-    playerPosition.y -= elementSize;
-    startGame()
+    if ((playerPosition.y - elementSize) < 0) {
+        console.log('cristo Lord');
+    } else {
+        playerPosition.y -= elementSize;
+        startGame()
+    }
 }
 function moveLeft() {
-    playerPosition.x -= elementSize;
-    startGame()
+    if ((playerPosition.x - elementSize) < elementSize) {
+        console.log('muy mamerto');
+    } else {
+        playerPosition.x -= elementSize;
+        startGame()
+    }
 }
 function moveRight() {
-    console.log('derecha');
-    playerPosition.x += elementSize;
-    startGame()
+    if ((playerPosition.x + elementSize) > canvasSize + elementSize) {
+        console.log('muy paraco');
+        
+    } else {
+        playerPosition.x += elementSize;
+        startGame()
+    }
 }
 function moveDown() {
-    playerPosition.y += elementSize;
-    startGame()
+    if ((playerPosition.y + elementSize) > canvasSize) {
+        console.log('er diablo');
+    } else {
+        playerPosition.y += elementSize;
+        startGame()
+    }
 }
 
 
