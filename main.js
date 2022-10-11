@@ -7,19 +7,25 @@ const buttonDown = document.querySelector('#down');
 
 let canvasSize;
 let elementSize;
-let randomN = Math.floor(Math.random() * (3-0));
+let level = 0;
 
 const playerPosition = {
     x: undefined,
     y: undefined,
-}
-
+};
 const giftPosition = {
     x: undefined,
     y: undefined,
-}
+};
+const housePosition = {
+    x: undefined,
+    y: undefined,
+};
+const enemypositions = [];
 
-const enemiesPositions = [];
+
+
+// Add event listeners
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
@@ -30,6 +36,100 @@ buttonUp.addEventListener('click', moveUp);
 buttonLeft.addEventListener('click', moveLeft);
 buttonRight.addEventListener('click', moveRight);
 buttonDown.addEventListener('click', moveDown);
+
+
+// funciones
+
+function setCanvasSize() {
+
+    if(window.innerHeight > innerWidth) {
+        canvasSize = window.innerWidth * 0.75;
+    } else {
+        canvasSize = window.innerHeight * 0.75;
+    }
+
+    canvas.setAttribute('width', canvasSize);
+    canvas.setAttribute('height', canvasSize);
+
+    elementSize = canvasSize / 10.1;
+
+    startGame();
+}
+
+function startGame() {
+    console.log({canvasSize, elementSize, level});
+
+    game.font = elementSize + 'px Verdana';
+    game.textAlign = 'end';
+    
+    const map = maps[level]; // elegir uno de los tres mapas
+    const mapRows = map.trim().split(`\n`); // quitar los espacios con trim y convertir los strings en arrays cada salto de línea
+    const mapColums = mapRows.map(row => row.trim().split('')); // crear un array dentro de los arrays que contiene por separado cada letra de los arrays originales
+
+    if (enemypositions) {
+        enemypositions.splice(0, enemypositions.length)
+    }
+    game.clearRect(0,0, canvasSize, canvasSize);
+    
+    mapColums.forEach((row, rowIndex) => {
+        row.forEach((col, colINdex) => {
+            const emoji = emojis[col];
+            const xAxis = elementSize * (colINdex + 1.2);
+            const yAxis = elementSize * (rowIndex + 0.9);
+
+            if (col == 'O') {
+                if (!playerPosition.x && !playerPosition.y) {
+                    playerPosition.x = xAxis;
+                    playerPosition.y = yAxis;
+                }
+            } else if (col == 'I') {
+                if (!giftPosition.x && !giftPosition.y) {
+                    giftPosition.x = xAxis;
+                    giftPosition.y = yAxis;
+                }
+            } else if (col == 'X') {
+                enemypositions.push({
+                    x: xAxis,
+                    y: yAxis,
+                })
+            }
+
+            game.fillText(emoji, xAxis, yAxis);
+        });       
+    });
+
+    movePlayer();
+}
+
+function movePlayer() {
+
+    const regalo = giftPosition.x.toFixed(3) == playerPosition.x.toFixed(3) && giftPosition.y.toFixed(3) == playerPosition.y.toFixed(3);
+
+    const enemy = enemypositions.find(element => {
+       const enemyX = element.x.toFixed(3) == playerPosition.x.toFixed(3);
+        const enemyY = element.y.toFixed(3) == playerPosition.y.toFixed(3);
+        return enemyX && enemyY;
+    });
+
+
+    if (regalo) {
+        levelWin();
+        giftPosition.x = undefined;
+        giftPosition.y = undefined;
+    }
+    if (enemy) {
+        console.log('ouch!!!, un cocazo');
+    }
+
+
+    game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
+}
+
+function levelWin() {
+    console.log('llegaste a la playa');
+    level++;
+    startGame();
+}
 
 function moveByKeys(event) {
     switch (event.key) {
@@ -44,10 +144,6 @@ function moveByKeys(event) {
     }
 }
 
-function movePlayer() {
-
-    game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
-}
 
 function moveUp() {
     if ((playerPosition.y - elementSize) < 0) {
@@ -84,68 +180,4 @@ function moveDown() {
 }
 
 
-function randomNumber() {
-    randomN = Math.floor(Math.random() * 3);
-    console.log(randomN);
-    setCanvasSize();
-}
 
-function startGame() {
-    console.log({canvasSize, elementSize, randomN});
-
-    game.font = elementSize + 'px Verdana';
-    game.textAlign = 'end';
-    
-    const map = maps[randomN]; // elegir uno de los tres mapas
-    const mapRows = map.trim().split(`\n`); // quitar los espacios con trim y convertir los strings en arrays cada salto de línea
-
-    const mapColums = mapRows.map(row => row.trim().split('')); // crear un array dentro de los arrays que contiene por separado cada letra de los arrays originales
-
-    game.clearRect(0,0, canvasSize, canvasSize);
-    mapColums.forEach((row, rowIndex) => {
-        row.forEach((col, colINdex) => {
-            const emoji = emojis[col];
-            const xAxis = elementSize * (colINdex + 1.2);
-            const yAxis = elementSize * (rowIndex + 0.9);
-
-            if (col == 'O') {
-                if (!playerPosition.x && !playerPosition.y) {
-                    playerPosition.x = xAxis;
-                    playerPosition.y = yAxis;
-                }
-            } else if (col == 'I') {
-                if (!giftPosition.x && !giftPosition.y) {
-                    giftPosition.x = xAxis;
-                    giftPosition.y = yAxis;
-                }
-            } else if (col == 'X') {
-                enemiesPositions.push({
-                    posX: xAxis,
-                    posY: yAxis,
-                })
-            }
-
-
-
-            game.fillText(emoji, xAxis, yAxis);
-        });       
-    });
-
-    movePlayer();
-};
-
-function setCanvasSize() {
-
-    if(window.innerHeight > innerWidth) {
-        canvasSize = window.innerWidth * 0.75;
-    } else {
-        canvasSize = window.innerHeight * 0.75;
-    }
-
-    canvas.setAttribute('width', canvasSize);
-    canvas.setAttribute('height', canvasSize);
-
-    elementSize = canvasSize / 10.1;
-
-    startGame();
-}
