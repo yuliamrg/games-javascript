@@ -4,6 +4,7 @@ const buttonUp = document.querySelector('#up');
 const buttonLeft = document.querySelector('#left');
 const buttonRight = document.querySelector('#right');
 const buttonDown = document.querySelector('#down');
+const spanLives = document.querySelector('#lives');
 
 let canvasSize;
 let elementSize;
@@ -69,6 +70,8 @@ function startGame() {
     const mapRows = map.trim().split(`\n`); // quitar los espacios con trim y convertir los strings en arrays cada salto de línea
     const mapColums = mapRows.map(row => row.trim().split('')); // crear un array dentro de los arrays que contiene por separado cada letra de los arrays originales
 
+    showLives();
+    
     if (enemypositions) {
         enemypositions.splice(0, enemypositions.length);
     }
@@ -143,20 +146,29 @@ function levelWin() {
 function levelFail() {
     playerPosition.x = undefined;
     playerPosition.y = undefined;
+    
+    console.log(lives);
+
     if (lives > 0) {
         lives--;
     } else {
         level = 0;
-        lives =3;
-        giftPosition.x = 0;
-        giftPosition.y = 0;
+        lives = 3;
+        giftPosition.x = undefined;
+        giftPosition.y = undefined;
     }
-    console.log(lives);
+    
     startGame();
 }
 
 function gameWin() {
     console.log('terminaste el juego');
+}
+
+function showLives() {
+    // const heartArray = Array(lives).fill(emojis.HEART); //  [1,2,3] cre aun array con las cantidades que diga la varable lives
+    // spanLives.innerHTML = heartArray.join('');
+    spanLives.innerHTML = emojis.HEART.repeat(lives);
 }
 
 function moveByKeys(event) {
