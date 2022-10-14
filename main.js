@@ -5,11 +5,17 @@ const buttonLeft = document.querySelector('#left');
 const buttonRight = document.querySelector('#right');
 const buttonDown = document.querySelector('#down');
 const spanLives = document.querySelector('#lives');
+const spanTime = document.querySelector('#time');
 
 let canvasSize;
 let elementSize;
 let level = 0;
 let lives = 3;
+
+let timeStart;
+let timePlayer;
+let timeInterval;
+
 
 const playerPosition = {
     x: undefined,
@@ -65,6 +71,11 @@ function startGame() {
     if (!map) {
         gameWin();
         return;
+    }
+
+    if (!timeStart) {
+        timeStart = Date.now();
+        timeInterval = setInterval(ShowTime, 100);
     }
 
     const mapRows = map.trim().split(`\n`); // quitar los espacios con trim y convertir los strings en arrays cada salto de línea
@@ -169,6 +180,11 @@ function showLives() {
     // const heartArray = Array(lives).fill(emojis.HEART); //  [1,2,3] cre aun array con las cantidades que diga la varable lives
     // spanLives.innerHTML = heartArray.join('');
     spanLives.innerHTML = emojis.HEART.repeat(lives);
+}
+
+function ShowTime() {
+    console.log('contando');
+    spanTime.innerHTML = Date.now() - timeStart;
 }
 
 function moveByKeys(event) {
