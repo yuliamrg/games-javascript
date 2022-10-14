@@ -174,6 +174,7 @@ function levelFail() {
 
 function gameWin() {
     console.log('terminaste el juego');
+    clearInterval(timeInterval);
 }
 
 function showLives() {
@@ -183,7 +184,6 @@ function showLives() {
 }
 
 function ShowTime() {
-    console.log('contando');
     spanTime.innerHTML = Date.now() - timeStart;
 }
 
