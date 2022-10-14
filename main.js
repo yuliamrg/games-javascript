@@ -8,16 +8,13 @@ const buttonDown = document.querySelector('#down');
 let canvasSize;
 let elementSize;
 let level = 0;
+let lives = 3;
 
 const playerPosition = {
     x: undefined,
     y: undefined,
 };
 const giftPosition = {
-    x: undefined,
-    y: undefined,
-};
-const housePosition = {
     x: undefined,
     y: undefined,
 };
@@ -38,7 +35,7 @@ buttonRight.addEventListener('click', moveRight);
 buttonDown.addEventListener('click', moveDown);
 
 
-// funciones
+// funciones principales
 
 function setCanvasSize() {
 
@@ -57,17 +54,23 @@ function setCanvasSize() {
 }
 
 function startGame() {
-    console.log({canvasSize, elementSize, level});
+   // console.log({canvasSize, elementSize, level});
 
     game.font = elementSize + 'px Verdana';
     game.textAlign = 'end';
     
     const map = maps[level]; // elegir uno de los tres mapas
+
+    if (!map) {
+        gameWin();
+        return;
+    }
+
     const mapRows = map.trim().split(`\n`); // quitar los espacios con trim y convertir los strings en arrays cada salto de línea
     const mapColums = mapRows.map(row => row.trim().split('')); // crear un array dentro de los arrays que contiene por separado cada letra de los arrays originales
 
     if (enemypositions) {
-        enemypositions.splice(0, enemypositions.length)
+        enemypositions.splice(0, enemypositions.length);
     }
     game.clearRect(0,0, canvasSize, canvasSize);
     
@@ -101,24 +104,26 @@ function startGame() {
     movePlayer();
 }
 
-function movePlayer() {
+// funciones de apoyo
 
-    const regalo = giftPosition.x.toFixed(3) == playerPosition.x.toFixed(3) && giftPosition.y.toFixed(3) == playerPosition.y.toFixed(3);
+function movePlayer() {
+    
+    const gift = giftPosition.x.toFixed(3) === playerPosition.x.toFixed(3) && giftPosition.y.toFixed(3) === playerPosition.y.toFixed(3);
 
     const enemy = enemypositions.find(element => {
-       const enemyX = element.x.toFixed(3) == playerPosition.x.toFixed(3);
+        const enemyX = element.x.toFixed(3) == playerPosition.x.toFixed(3);
         const enemyY = element.y.toFixed(3) == playerPosition.y.toFixed(3);
         return enemyX && enemyY;
     });
 
 
-    if (regalo) {
+    if (gift) {
         levelWin();
-        giftPosition.x = undefined;
-        giftPosition.y = undefined;
+        return;
     }
     if (enemy) {
         console.log('ouch!!!, un cocazo');
+        levelFail();
     }
 
 
@@ -128,7 +133,30 @@ function movePlayer() {
 function levelWin() {
     console.log('llegaste a la playa');
     level++;
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    giftPosition.x = undefined;
+    giftPosition.y = undefined;
     startGame();
+}
+
+function levelFail() {
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    if (lives > 0) {
+        lives--;
+    } else {
+        level = 0;
+        lives =3;
+        giftPosition.x = 0;
+        giftPosition.y = 0;
+    }
+    console.log(lives);
+    startGame();
+}
+
+function gameWin() {
+    console.log('terminaste el juego');
 }
 
 function moveByKeys(event) {
