@@ -7,6 +7,7 @@ const buttonDown = document.querySelector('#down');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanRecord = document.querySelector('#record');
+const pResult = document.querySelector('#result');
 
 let canvasSize;
 let elementSize;
@@ -77,7 +78,7 @@ function startGame() {
     if (!timeStart) {
         timeStart = Date.now();
         timeInterval = setInterval(ShowTime, 10);
-        spanRecord.innerHTML = localStorage.getItem('record');
+        spanRecord.innerHTML = localStorage.getItem('record') + ' segundos';
     }
 
     const mapRows = map.trim().split(`\n`); // quitar los espacios con trim y convertir los strings en arrays cada salto de línea
@@ -177,12 +178,16 @@ function levelFail() {
 
 function gameWin() {
     console.log('terminaste el juego');
-    const record = parseInt(localStorage.getItem('record')) > timePlayer;
-    if (record) {
-        localStorage.setItem('record', timePlayer);
-    }
-    spanRecord.innerHTML = localStorage.getItem('record');
+    const record = parseInt(localStorage.getItem('record'));
     clearInterval(timeInterval);
+    
+    pResult.innerHTML = '¡Felicidades Ganaste!'
+    
+    if (record > timePlayer) {
+        localStorage.setItem('record', timePlayer);
+        spanRecord.innerHTML = localStorage.getItem('record') + ' ¡Nuevo record!';
+    }
+    
 }
 
 function showLives() {
@@ -193,7 +198,7 @@ function showLives() {
 
 function ShowTime() {
     timePlayer = ((Date.now() - timeStart)/1000).toFixed(1);
-    spanTime.innerHTML = timePlayer;
+    spanTime.innerHTML = timePlayer + ' segundos';
 }
 
 function moveByKeys(event) {
