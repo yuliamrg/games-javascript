@@ -6,6 +6,7 @@ const buttonRight = document.querySelector('#right');
 const buttonDown = document.querySelector('#down');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
+const spanRecord = document.querySelector('#record');
 
 let canvasSize;
 let elementSize;
@@ -75,7 +76,8 @@ function startGame() {
 
     if (!timeStart) {
         timeStart = Date.now();
-        timeInterval = setInterval(ShowTime, 100);
+        timeInterval = setInterval(ShowTime, 10);
+        spanRecord.innerHTML = localStorage.getItem('record');
     }
 
     const mapRows = map.trim().split(`\n`); // quitar los espacios con trim y convertir los strings en arrays cada salto de línea
@@ -167,6 +169,7 @@ function levelFail() {
         lives = 3;
         giftPosition.x = undefined;
         giftPosition.y = undefined;
+        timeStart = undefined;
     }
     
     startGame();
@@ -174,6 +177,11 @@ function levelFail() {
 
 function gameWin() {
     console.log('terminaste el juego');
+    const record = parseInt(localStorage.getItem('record')) > timePlayer;
+    if (record) {
+        localStorage.setItem('record', timePlayer);
+    }
+    spanRecord.innerHTML = localStorage.getItem('record');
     clearInterval(timeInterval);
 }
 
@@ -184,7 +192,8 @@ function showLives() {
 }
 
 function ShowTime() {
-    spanTime.innerHTML = Date.now() - timeStart;
+    timePlayer = ((Date.now() - timeStart)/1000).toFixed(1);
+    spanTime.innerHTML = timePlayer;
 }
 
 function moveByKeys(event) {
