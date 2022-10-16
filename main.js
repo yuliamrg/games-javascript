@@ -53,6 +53,10 @@ buttonRestart.addEventListener('click', restartGame);
 // funciones principales
 
 function setCanvasSize() {
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    giftPosition.x = undefined;
+    giftPosition.y = undefined;
 
     if(window.innerHeight > innerWidth) {
         canvasSize = window.innerWidth * 0.75;
@@ -198,13 +202,18 @@ function levelFail() {
 function gameWin() {
     const record = parseInt(localStorage.getItem('record'));
     clearInterval(timeInterval);
-        
+    winContainer.innerHTML = '<h1>¡Felicidades Ganaste!</h1>'
+    
     if (record > timePlayer) {
         localStorage.setItem('record', timePlayer);
         spanRecord.innerHTML = localStorage.getItem('record') + ' segundos';
         winContainer.innerHTML += '<h1>¡Nuevo record!</h1>';
     }
-    layoutGameContainer();
+    winContainer.classList.toggle('inactive');
+    winContainer.setAttribute('style', `width: ${canvasSize * .50}px; height: ${canvasSize * .50}px;`);
+    buttonRestart.setAttribute('id', 'restart');
+    buttonRestart.innerHTML = 'jugar de nuevo';
+    winContainer.appendChild(buttonRestart);
 }
 
 function restartGame() {
@@ -212,7 +221,7 @@ function restartGame() {
     timeStart = undefined;
     level = 0;
     lives = 3;
-    winContainer.classList.add('inactive');
+    winContainer.classList.toggle('inactive');
     setCanvasSize();
 }
 
@@ -226,15 +235,6 @@ function ShowTime() {
     timePlayer = ((Date.now() - timeStart)/1000).toFixed(1);
     spanTime.innerHTML = timePlayer + ' segundos';
 }
-
-function layoutGameContainer() {
-    winContainer.classList.remove('inactive');
-    winContainer.setAttribute('style', `width: ${canvasSize * .50}px; height: ${canvasSize * .50}px;`);
-    buttonRestart.setAttribute('id', 'restart');
-    buttonRestart.innerHTML = 'jugar de nuevo';
-    winContainer.appendChild(buttonRestart);
-}
-
 
 function moveByKeys(event) {
     switch (event.key) {
