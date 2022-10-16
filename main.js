@@ -28,6 +28,10 @@ const giftPosition = {
     x: undefined,
     y: undefined,
 };
+const BombPosition = {
+    x: undefined,
+    y: undefined,
+};
 const enemypositions = [];
 
 
@@ -124,6 +128,11 @@ function startGame() {
             game.fillText(emoji, xAxis, yAxis);
         });       
     });
+    if (BombPosition) {
+        game.fillText(emojis['BOMB_COLLISION'], BombPosition.x, BombPosition.y);
+        BombPosition.x = undefined;
+        BombPosition.y = undefined;
+    }
 
     movePlayer();
 }
@@ -137,17 +146,21 @@ function movePlayer() {
     const enemy = enemypositions.find(element => {
         const enemyX = element.x.toFixed(3) == playerPosition.x.toFixed(3);
         const enemyY = element.y.toFixed(3) == playerPosition.y.toFixed(3);
+        if (enemyX && enemyY) {
+            BombPosition.x = element.x;
+            BombPosition.y = element.y;
+        }
         return enemyX && enemyY;
     });
-
-
+    
+    
     if (gift) {
         levelWin();
         return;
     }
     if (enemy) {
-        console.log('ouch!!!, un cocazo');
         levelFail();
+        return;
     }
 
 
@@ -241,8 +254,6 @@ function moveUp() {
     if (insideCanvasUp > 0) {
         playerPosition.y -= elementSize;
         startGame()
-    } else {
-        console.log('cristo Lord');
     }
 }
 function moveLeft() {
@@ -250,8 +261,6 @@ function moveLeft() {
     if (insideCanvasLeft > elementSize) {
         playerPosition.x -= elementSize;
         startGame()
-    } else {
-        console.log('muy mamerto');
     }
 }
 function moveRight() {
@@ -259,8 +268,6 @@ function moveRight() {
     if (insideCanvasRight < canvasSize + elementSize) {
         playerPosition.x += elementSize;
         startGame()
-    } else {
-        console.log('muy paraco');
     }
 }
 function moveDown() {
@@ -268,7 +275,5 @@ function moveDown() {
     if (insideCanvasDown < canvasSize) {
         playerPosition.y += elementSize;
         startGame()
-    } else {
-        console.log('er diablo');
     }
 }
