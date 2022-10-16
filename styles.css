@@ -59,12 +59,26 @@ body {
   }
 
   .win {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
     position: absolute;
     background-color: #ff6600;
+    border-radius: 50px;
   }
 
   .inactive {
     display: none;
+  }
+
+  .win h1 {
+    font-size: 1.8em;
+    color: white;
+  }
+
+  .win button {
+    padding: 2% 43% 2% 43%;
   }
   
   @media (max-width: 440px) {

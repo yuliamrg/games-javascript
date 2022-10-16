@@ -7,7 +7,6 @@ const buttonDown = document.querySelector('#down');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanRecord = document.querySelector('#record');
-const pResult = document.querySelector('#result');
 const winContainer = document.querySelector('.win');
 const buttonRestart = document.createElement('button');
 
@@ -156,7 +155,6 @@ function movePlayer() {
 }
 
 function levelWin() {
-    console.log('llegaste a la playa');
     level++;
     playerPosition.x = undefined;
     playerPosition.y = undefined;
@@ -185,15 +183,13 @@ function levelFail() {
 }
 
 function gameWin() {
-    console.log('terminaste el juego');
     const record = parseInt(localStorage.getItem('record'));
     clearInterval(timeInterval);
-    
-    pResult.innerHTML = '¡Felicidades Ganaste!';
-    
+        
     if (record > timePlayer) {
         localStorage.setItem('record', timePlayer);
-        spanRecord.innerHTML = localStorage.getItem('record') + ' ¡Nuevo record!';
+        spanRecord.innerHTML = localStorage.getItem('record') + ' segundos';
+        winContainer.innerHTML += '<h1>¡Nuevo record!</h1>';
     }
     layoutGameContainer();
 }
@@ -201,14 +197,10 @@ function gameWin() {
 function restartGame() {
     console.log('reinicar');
     timeStart = undefined;
-    timePlayer = undefined;
-    timeInterval = undefined;
     level = 0;
     lives = 3;
     winContainer.classList.add('inactive');
-    pResult.innerHTML = '';
     setCanvasSize();
-    console.log({canvasSize, elementSize, timeStart, timePlayer, timeInterval});
 }
 
 function showLives() {
@@ -224,9 +216,7 @@ function ShowTime() {
 
 function layoutGameContainer() {
     winContainer.classList.remove('inactive');
-    winContainer.innerHTML = '<h2>!Felicidades¡ Ganaste</h2>';
-    winContainer.setAttribute('width', canvasSize + 'px');
-    winContainer.setAttribute('height', canvasSize + 'px');
+    winContainer.setAttribute('style', `width: ${canvasSize * .50}px; height: ${canvasSize * .50}px;`);
     buttonRestart.setAttribute('id', 'restart');
     buttonRestart.innerHTML = 'jugar de nuevo';
     winContainer.appendChild(buttonRestart);
@@ -247,38 +237,38 @@ function moveByKeys(event) {
 }
 
 function moveUp() {
-    if ((playerPosition.y - elementSize) < 0) {
-        console.log('cristo Lord');
-    } else {
+    let insideCanvasUp = playerPosition.y - elementSize;
+    if (insideCanvasUp > 0) {
         playerPosition.y -= elementSize;
         startGame()
+    } else {
+        console.log('cristo Lord');
     }
 }
 function moveLeft() {
-    if ((playerPosition.x - elementSize) < elementSize) {
-        console.log('muy mamerto');
-    } else {
+    let insideCanvasLeft = playerPosition.x - elementSize;
+    if (insideCanvasLeft > elementSize) {
         playerPosition.x -= elementSize;
         startGame()
+    } else {
+        console.log('muy mamerto');
     }
 }
 function moveRight() {
-    if ((playerPosition.x + elementSize) > canvasSize + elementSize) {
-        console.log('muy paraco');
-        
-    } else {
+    let insideCanvasRight = playerPosition.x + elementSize;
+    if (insideCanvasRight < canvasSize + elementSize) {
         playerPosition.x += elementSize;
         startGame()
+    } else {
+        console.log('muy paraco');
     }
 }
 function moveDown() {
-    if ((playerPosition.y + elementSize) > canvasSize) {
-        console.log('er diablo');
-    } else {
+    let insideCanvasDown = playerPosition.y + elementSize;
+    if (insideCanvasDown < canvasSize) {
         playerPosition.y += elementSize;
         startGame()
+    } else {
+        console.log('er diablo');
     }
 }
-
-
-
