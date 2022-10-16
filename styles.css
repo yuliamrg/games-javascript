@@ -57,6 +57,15 @@ body {
     margin: 0;
     width: 100%;
   }
+
+  .win {
+    position: absolute;
+    background-color: #ff6600;
+  }
+
+  .inactive {
+    display: none;
+  }
   
   @media (max-width: 440px) {
     button { margin-top: 25px; }

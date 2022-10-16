@@ -8,10 +8,12 @@ const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanRecord = document.querySelector('#record');
 const pResult = document.querySelector('#result');
+const winContainer = document.querySelector('.win');
+const buttonRestart = document.createElement('button');
 
 let canvasSize;
 let elementSize;
-let level = 0;
+let level = 2;
 let lives = 3;
 
 let timeStart;
@@ -42,6 +44,7 @@ buttonUp.addEventListener('click', moveUp);
 buttonLeft.addEventListener('click', moveLeft);
 buttonRight.addEventListener('click', moveRight);
 buttonDown.addEventListener('click', moveDown);
+buttonRestart.addEventListener('click', restartGame);
 
 
 // funciones principales
@@ -78,6 +81,11 @@ function startGame() {
     if (!timeStart) {
         timeStart = Date.now();
         timeInterval = setInterval(ShowTime, 10);
+        
+        if (!localStorage.getItem('record')) {
+            localStorage.setItem('record', '999 segundos');
+        }
+
         spanRecord.innerHTML = localStorage.getItem('record') + ' segundos';
     }
 
@@ -181,13 +189,26 @@ function gameWin() {
     const record = parseInt(localStorage.getItem('record'));
     clearInterval(timeInterval);
     
-    pResult.innerHTML = '¡Felicidades Ganaste!'
+    pResult.innerHTML = '¡Felicidades Ganaste!';
     
     if (record > timePlayer) {
         localStorage.setItem('record', timePlayer);
         spanRecord.innerHTML = localStorage.getItem('record') + ' ¡Nuevo record!';
     }
-    
+    layoutGameContainer();
+}
+
+function restartGame() {
+    console.log('reinicar');
+    timeStart = undefined;
+    timePlayer = undefined;
+    timeInterval = undefined;
+    level = 0;
+    lives = 3;
+    winContainer.classList.add('inactive');
+    pResult.innerHTML = '';
+    setCanvasSize();
+    console.log({canvasSize, elementSize, timeStart, timePlayer, timeInterval});
 }
 
 function showLives() {
@@ -201,6 +222,17 @@ function ShowTime() {
     spanTime.innerHTML = timePlayer + ' segundos';
 }
 
+function layoutGameContainer() {
+    winContainer.classList.remove('inactive');
+    winContainer.innerHTML = '<h2>!Felicidades¡ Ganaste</h2>';
+    winContainer.setAttribute('width', canvasSize + 'px');
+    winContainer.setAttribute('height', canvasSize + 'px');
+    buttonRestart.setAttribute('id', 'restart');
+    buttonRestart.innerHTML = 'jugar de nuevo';
+    winContainer.appendChild(buttonRestart);
+}
+
+
 function moveByKeys(event) {
     switch (event.key) {
         case 'ArrowUp': moveUp();
@@ -213,7 +245,6 @@ function moveByKeys(event) {
             break;
     }
 }
-
 
 function moveUp() {
     if ((playerPosition.y - elementSize) < 0) {
