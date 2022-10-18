@@ -93,7 +93,7 @@ function startGame() {
             localStorage.setItem('record', '999 segundos');
         }
 
-        spanRecord.innerHTML = localStorage.getItem('record') + ' segundos';
+        spanRecord.innerHTML = localStorage.getItem('record');
     }
 
     const mapRows = map.trim().split(`\n`); // quitar los espacios con trim y convertir los strings en arrays cada salto de línea
@@ -232,7 +232,7 @@ function showLives() {
 
 function ShowTime() {
     timePlayer = ((Date.now() - timeStart)/1000).toFixed(1);
-    spanTime.innerHTML = timePlayer + ' segundos';
+    spanTime.innerHTML = timePlayer;
 }
 
 function moveByKeys(event) {
