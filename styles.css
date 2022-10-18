@@ -61,27 +61,49 @@ body {
   .win {
     display: flex;
     flex-direction: column;
+    font-size: 1rem;
     align-items: center;
     justify-content: space-evenly;
     position: absolute;
     background-color: #ff6600;
-    border-radius: 50px;
+    border-radius: 21px;
   }
 
   .inactive {
     display: none;
   }
 
-  .win h1 {
-    font-size: 1.8em;
+  .win p {
+    font-size: 0.85rem;
     color: white;
+    text-align: center;
+  }
+
+  .win p span {
+    font-size: 2rem;
   }
 
   .win button {
-    padding: 0;
+    padding: 7px;
+    width: 85%;
   }
   
   @media (max-width: 440px) {
-    button { margin-top: 25px; }
+    button { margin-top: 5px; }
     #up, #down { margin-left: 100%; margin-right: 100%; }
+
+    .win {
+      /* font-size: 0.3rem; */
+    border-radius: 13px;
+    }
+    .win p {
+      font-size: 0.55rem;
+    }
+    .win p span {
+      font-size: 1.5rem;
+    }
+    .win button {
+      font-size: 0.54rem;
+      border-radius: 13px;
+    }
   }

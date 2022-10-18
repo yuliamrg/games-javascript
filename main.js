@@ -53,27 +53,27 @@ buttonRestart.addEventListener('click', restartGame);
 // funciones principales
 
 function setCanvasSize() {
+    
+    if(window.innerHeight > innerWidth) {
+        canvasSize = window.innerWidth * 0.70;
+    } else {
+        canvasSize = window.innerHeight * 0.70;
+    }
+    
+    canvas.setAttribute('width', canvasSize);
+    canvas.setAttribute('height', canvasSize);
+    
+    elementSize = canvasSize / 10.1;
+    
     playerPosition.x = undefined;
     playerPosition.y = undefined;
     giftPosition.x = undefined;
     giftPosition.y = undefined;
-
-    if(window.innerHeight > innerWidth) {
-        canvasSize = window.innerWidth * 0.75;
-    } else {
-        canvasSize = window.innerHeight * 0.75;
-    }
-
-    canvas.setAttribute('width', canvasSize);
-    canvas.setAttribute('height', canvasSize);
-
-    elementSize = canvasSize / 10.1;
-
+    
     startGame();
 }
 
 function startGame() {
-   // console.log({canvasSize, elementSize, level});
 
     game.font = elementSize + 'px Verdana';
     game.textAlign = 'end';
@@ -167,7 +167,6 @@ function movePlayer() {
         return;
     }
 
-
     game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 
@@ -202,17 +201,17 @@ function levelFail() {
 function gameWin() {
     const record = parseInt(localStorage.getItem('record'));
     clearInterval(timeInterval);
-    winContainer.innerHTML = '<h1>¡Felicidades Ganaste!</h1>'
+    winContainer.innerHTML = `<p>¡Felicidades Ganaste!<br><span>${emojis['WIN']}</span></p>`;
     
     if (record > timePlayer) {
         localStorage.setItem('record', timePlayer);
         spanRecord.innerHTML = localStorage.getItem('record') + ' segundos';
-        winContainer.innerHTML += '<h1>¡Nuevo record!</h1>';
+        winContainer.innerHTML += '<p>¡Nuevo record!</p>';
     }
-    winContainer.classList.toggle('inactive');
+    winContainer.classList.remove('inactive');
     winContainer.setAttribute('style', `width: ${canvasSize * .50}px; height: ${canvasSize * .50}px;`);
     buttonRestart.setAttribute('id', 'restart');
-    buttonRestart.innerHTML = 'jugar de nuevo';
+    buttonRestart.innerHTML = 'Jugar De Nuevo';
     winContainer.appendChild(buttonRestart);
 }
 
@@ -221,7 +220,7 @@ function restartGame() {
     timeStart = undefined;
     level = 0;
     lives = 3;
-    winContainer.classList.toggle('inactive');
+    winContainer.classList.add('inactive');
     setCanvasSize();
 }
 
