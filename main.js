@@ -12,7 +12,7 @@ const buttonRestart = document.createElement('button');
 
 let canvasSize;
 let elementSize;
-let level = 2;
+let level = 0;
 let lives = 3;
 
 let timeStart;
